@@ -15,8 +15,6 @@
         "outDir": "./.tmp/build/",
         "moduleResolution": "node",
         "declaration": true,
-        "noImplicitThis": true,
-        "noImplicitAny": true,
         "alwaysStrict": true,
         "strictBindCallApply": true,
         "strictNullChecks": true,
@@ -24,8 +22,7 @@
         "strictPropertyInitialization": false,
         "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
-        "removeComments": true,
-        "strict": true
+        "removeComments": true
     },
     "files": [
         "src/hierarchySlicer.ts",
