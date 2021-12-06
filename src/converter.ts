@@ -124,9 +124,9 @@ export function converter(
             const parents = dataPoints.filter((d: IHierarchySlicerDataPoint) => d.level === l);
             parents.forEach(
                 (d: IHierarchySlicerDataPoint) =>
-                    (d.isLeaf =
-                        dataPoints.filter((dp: IHierarchySlicerDataPoint) => isEqual(dp.parentId, d.ownId)).length ===
-                        0)
+                (d.isLeaf =
+                    dataPoints.filter((dp: IHierarchySlicerDataPoint) => isEqual(dp.parentId, d.ownId)).length ===
+                    0)
             );
         }
     }
@@ -395,7 +395,8 @@ export function processSingleSelect(
     hostServices: IVisualHost,
     dataPoints: IHierarchySlicerDataPoint[],
     columnFilters: IFilterTarget[],
-    levels: number
+    levels: number,
+    setting?: HierarchySlicerSettings
 ) {
     let selectionDataPoints = dataPoints.filter(
         (d: IHierarchySlicerDataPoint) => d.selected && !isEqual(d.ownId, ["selectAll"])
@@ -417,5 +418,5 @@ export function processSingleSelect(
             }
         });
     }
-    applyFilter(hostServices, dataPoints, columnFilters, filterLevel);
+    applyFilter(hostServices, dataPoints, columnFilters, filterLevel, setting);
 }

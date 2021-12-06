@@ -34,6 +34,7 @@ import { Selection } from "d3-selection";
 import { isArray } from "lodash-es";
 
 import { HierarchySlicerProperties, IHierarchySlicerDataPoint } from "./interfaces";
+import { HierarchySlicerSettings } from "./hierarchySlicerSettings";
 
 import IFilter = powerbi.IFilter;
 import FilterAction = powerbi.FilterAction;
@@ -299,7 +300,8 @@ export function applyFilter(
     hostServices: IVisualHost,
     tree: IHierarchySlicerDataPoint[],
     columnFilters: IFilterTarget[],
-    levels: number
+    levels: number,
+    setting?: HierarchySlicerSettings
 ): any {
     // Called without data
     if (tree.length === 0) {
@@ -309,7 +311,9 @@ export function applyFilter(
     const targets: IFilterTarget[] = columnFilters.slice(0, levels + 1);
     const dataPoints = tree.filter(d => d.ownId !== ["selectAll"]);
     const filterDataPoints: IHierarchySlicerDataPoint[] = dataPoints.filter(d => d.selected && d.level === levels);
-
+    //const leafDataPoints: IHierarchySlicerDataPoint[] = filterDataPoints.filter(d => d.isLeaf);
+    //console.log(leafDataPoints);
+    //console.log(targets)
     // create table from tree
     let filterValues: any[] = filterDataPoints.map((dataPoint: IHierarchySlicerDataPoint) => {
         // TupleValueType
@@ -320,7 +324,15 @@ export function applyFilter(
             };
         });
     });
-
+    //&& leafDataPoints && leafDataPoints.length === 0
+    if (setting
+        && setting.selection
+        && setting.selection.filterDirectEntity
+    ) {
+        targets.push({ table: columnFilters[levels + 1].table, column: setting.selection.filterDirectEntity });
+        filterValues[0].push(filterValues[0][filterValues[0].length - 1]);
+    }
+    //console.log(filterValues)
     let filterInstance: any = {
         $schema: "http://powerbi.com/product/schema#tuple", // tslint:disable-line: no-http-string
         target: targets,

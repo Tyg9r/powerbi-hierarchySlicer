@@ -68,6 +68,7 @@ class SelectionSettings {
     public emptyLeafLabelDefault: string = "(Blank)";
     public selectAll: boolean = false; // Select All node
     public selectAllLabel: string = "Select All";
+    public filterDirectEntity: string = "";
 }
 
 class HeaderSettings {

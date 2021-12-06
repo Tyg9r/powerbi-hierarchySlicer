@@ -420,7 +420,8 @@ export class HierarchySlicer implements IVisual {
                         this.hostServices,
                         this.data.dataPoints,
                         this.data.columnFilters,
-                        this.data.levels
+                        this.data.levels,
+                        this.settings
                     );
                 }
                 break;
@@ -916,8 +917,7 @@ export class HierarchySlicer implements IVisual {
             "width",
             (d: IHierarchySlicerDataPoint) =>
                 `calc(((100vw - ${(d.level + 1) * expanderMargin}px) - 
-                ${
-                    this.settings.tooltipSettings.icon === TooltipIcon.None ? 0 : Math.ceil(iconSize) + scrollbarMargin
+                ${this.settings.tooltipSettings.icon === TooltipIcon.None ? 0 : Math.ceil(iconSize) + scrollbarMargin
                 }px - 
                 ${iconSize + 5}px`
         );
@@ -933,8 +933,8 @@ export class HierarchySlicer implements IVisual {
     private getHeaderHeight(): number {
         const searchHeight: number = this.settings.general.selfFilterEnabled
             ? textMeasurementService.estimateSvgTextHeight(
-                  this.getTextProperties(this.settings.search.fontFamily, this.settings.search.textSizeZoomed)
-              ) + 2
+                this.getTextProperties(this.settings.search.fontFamily, this.settings.search.textSizeZoomed)
+            ) + 2
             : 0;
         return (
             textMeasurementService.estimateSvgTextHeight(
@@ -1235,6 +1235,9 @@ export class HierarchySlicer implements IVisual {
                 }
                 if (this.settings.selection.hideMembers !== HideMembers.Never) {
                     this.removeEnumerateObject(instanceEnumeration, "emptyLeafLabel");
+                }
+                if (!this.settings.selection.singleSelect) {
+                    this.removeEnumerateObject(instanceEnumeration, "filterDirectEntity");
                 }
                 break;
             case "search":

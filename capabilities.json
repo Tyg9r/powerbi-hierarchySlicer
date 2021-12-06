@@ -11,15 +11,18 @@
             "displayName": "Values"
         }
     ],
-    "dataViewMappings": [{
-        "conditions": [{
-            "Values": {
-                "min": 0,
-                "max": 1
-            }
-        }],
-        "matrix": {
-            "rows": {
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "Values": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            ],
+            "matrix": {
+                "rows": {
                     "for": {
                         "in": "Fields"
                     },
@@ -27,19 +30,20 @@
                         "window": {
                             "count": 30000
                         }
-                    }    
-                },
-            "values": {
-                "select": [
-                    {
-                        "for": {
-                            "in": "Values"
-                        }
                     }
-                ]
+                },
+                "values": {
+                    "select": [
+                        {
+                            "for": {
+                                "in": "Values"
+                            }
+                        }
+                    ]
+                }
             }
         }
-    }],
+    ],
     "objects": {
         "general": {
             "displayName": "General",
@@ -171,6 +175,13 @@
                     "type": {
                         "text": true
                     }
+                },
+                "filterDirectEntity": {
+                    "displayName": "Filter direct descendants",
+                    "description": "Column name for filtering direct descendants",
+                    "type": {
+                        "text": true
+                    }
                 }
             }
         },
@@ -285,7 +296,8 @@
                 "outline": {
                     "displayName": "Outline",
                     "type": {
-                        "enumeration": [{
+                        "enumeration": [
+                            {
                                 "value": "0",
                                 "displayName": "None"
                             },
@@ -546,7 +558,8 @@
                     "displayName": "Enlarge",
                     "description": "Amount of enlarging the font for zoom view",
                     "type": {
-                        "enumeration": [{
+                        "enumeration": [
+                            {
                                 "value": "25",
                                 "displayName": "Small (25%)"
                             },
@@ -594,7 +607,6 @@
                             }
                         ]
                     }
-
                 },
                 "color": {
                     "displayName": "Icon color",

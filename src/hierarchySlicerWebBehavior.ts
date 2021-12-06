@@ -197,7 +197,7 @@ export class HierarchySlicerWebBehavior implements IInteractiveBehavior {
             if (
                 (siblings.length > 1 &&
                     siblings.length ===
-                        siblings.filter(sibling => sibling.selected && !sibling.partialSelected).length &&
+                    siblings.filter(sibling => sibling.selected && !sibling.partialSelected).length &&
                     (this.settings.selection.singleSelect || !this.ctrlPressed) &&
                     !(!this.settings.selection.singleSelect && !this.settings.selection.ctrlSelect)) ||
                 (!this.settings.selection.singleSelect &&
@@ -253,9 +253,16 @@ export class HierarchySlicerWebBehavior implements IInteractiveBehavior {
             // Select all children
             selectionDataPoints.forEach((dataPoint: IHierarchySlicerDataPoint) => {
                 if (dataPoint.ownId.length > d.level + 1) {
-                    const id = dataPoint.ownId.slice(0, d.level + 1);
-                    if (isEqual(id, d.ownId)) {
-                        dataPoint.selected = selected;
+                    if (this.settings.selection.filterDirectEntity.length > 0) {
+                        if (isEqual(dataPoint.parentId, d.ownId)) {
+                            dataPoint.selected = selected;
+                        }
+                    }
+                    else {
+                        const id = dataPoint.ownId.slice(0, d.level + 1);
+                        if (isEqual(id, d.ownId)) {
+                            dataPoint.selected = selected;
+                        }
                     }
                 }
             });
@@ -264,7 +271,7 @@ export class HierarchySlicerWebBehavior implements IInteractiveBehavior {
 
             this.renderSelection(true);
             this.persistSelectAll(selectionDataPoints.filter(d => d.selected).length === selectionDataPoints.length);
-            this.filterInstance.push(applyFilter(this.hostServices, this.fullTree, this.columnFilters, filterLevel));
+            this.filterInstance.push(applyFilter(this.hostServices, this.fullTree, this.columnFilters, filterLevel, this.settings));
             this.spinnerTimeoutId = undefined;
             this.removeSpinners();
         });
@@ -407,7 +414,7 @@ export class HierarchySlicerWebBehavior implements IInteractiveBehavior {
 
     public styleSlicerInputs(slicers: Selection<any, any, any, any>, hasSelection: boolean) {
         let settings = this.settings;
-        slicers.each(function(d: IHierarchySlicerDataPoint) {
+        slicers.each(function (d: IHierarchySlicerDataPoint) {
             let slicerItem: HTMLElement = this.getElementsByTagName("div")[0];
             let shouldCheck: boolean = d.selected;
             let partialCheck: boolean = d.partialSelected;
